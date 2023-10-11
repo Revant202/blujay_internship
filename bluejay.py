@@ -1,20 +1,22 @@
+# run python bluejay.py to see results in console
+
 import pandas as pd
 
-# Read the Excel file into a DataFrame
+# Reading the Excel file into a DataFrame
 file_path = 'Assignment_Timecard.xlsx'
 df = pd.read_excel(file_path)
 
-# Define a dictionary to specify how to handle missing values for each column
+# Defining a dictionary to specify how to handle missing values for each column
 fillna_values = {
     'Time': pd.to_datetime('1970-01-01'),  # Replace missing Time values with a specific date
     'Time Out': pd.to_datetime('1970-01-01'),  # Replace missing Time Out values with a specific date
     'Timecard Hours (as Time)': 0  # Replace missing Timecard Hours (as Time) with 0
 }
 
-# Fill missing values based on the specified dictionary
+# Filling missing values based on the specified dictionary
 df.fillna(value=fillna_values, inplace=True)
 
-# Convert 'Timecard Hours (as Time)' to float
+# Converting 'Timecard Hours (as Time)' to float
 df['Timecard Hours (as Time)'] = df['Timecard Hours (as Time)'].str.extract(r'(\d+)').astype(float)
 
 # Function to check if an employee has worked for 7 consecutive days
@@ -37,7 +39,7 @@ def time_between_shifts(employee_df):
 def worked_for_more_than_14_hours(employee_df):
     return any(employee_df['Timecard Hours (as Time)'] > 14)
 
-# Group the data by 'Employee Name'
+# Grouping the data by 'Employee Name'
 grouped = df.groupby('Employee Name')
 consecutiveDays = []
 shifts = []
